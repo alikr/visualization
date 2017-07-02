@@ -10,6 +10,8 @@ web可视化相关的库和资源
   * [G2](https://antv.alipay.com/)
   * [cytoscape.js](http://js.cytoscape.org/)
   * [Tween.js](https://github.com/tweenjs/tween.js)
+  * [Deck.gl](http://uber.github.io/deck.gl)
+  * [heatmap.js](https://www.patrick-wied.at/static/heatmapjs/)
   
 
 ## API
@@ -24,7 +26,7 @@ web可视化相关的库和资源
   * [Tween.js](https://github.com/tweenjs/tween.js/blob/master/docs/user_guide.md)
 
 
-## 源码教程
+## 源码/教程
 
   * [D3 Gallery](https://github.com/mbostock/d3/wiki/Gallery)
   * [d3list](http://christopheviau.com/d3list/gallery.html)
@@ -36,6 +38,8 @@ web可视化相关的库和资源
   * [WebGL, WebVR and C++ apps, experiments and code](http://callumprentice.github.io/)
   * [mrdoob](http://mrdoob.com/) WebGL效果
   * [Intro to WebGL with Three.js](http://davidscottlyons.com/threejs/presentations/frontporch14/#slide-0)
+  * [Three.js Examples](http://stemkoski.github.io/Three.js/)
+  * [HTML5 Canvas Tutorials](http://www.html5canvastutorials.com/)
 
 
 ## 推荐网站（示例效果、web应用、官网等）
@@ -76,8 +80,14 @@ web可视化相关的库和资源
   * [Information is Beautiful](http://www.informationisbeautiful.net/)
   * [News Graphics Collection](http://collection.marijerooze.nl/)
 
-## 其它工具
+## 其它
 
   * [map2globe](http://makc.github.io/three.js/map2globe/index.html)
   * [mapshaper](https://github.com/mbloch/mapshaper)
   * [Method-Draw](http://editor.method.ac/)
+  * [MathJax中文文档](http://mathjax-chinese-doc.readthedocs.org/en/latest/index.html)
+  * [SVG - 菜鸟教程](http://www.w3cschool.cc/svg/svg-tutorial.html)
+  * [SVG - MDN](https://developer.mozilla.org/en-US/docs/Web/SVG)
+  * [Canvas 参考手册 - W3school](http://www.w3school.com.cn/tags/html_ref_canvas.asp)
+  * [WebGL - MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)
+  
