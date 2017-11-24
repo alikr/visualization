@@ -2,18 +2,21 @@
 
 ## 基本介绍
 
-> D3(Data-Driven Documents)是一个数据可视化库，作者是 [Mike Bostock](https://bost.ocks.org/mike/)
+> D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
+> 以函数对象的语法方式组织程序，很少使用new和this  
+> 
 
 ## 特点
 
 - 数据绑定（DOM）
-> 将数据绑定DOM上（** __data__ ** 属性上），方便二者相互转换操作，比如：根据当前的DOM获取原始数据，经计算转换后用于绘制其它图形，反过来，也可以根据数据过滤DOM
+> 将数据绑定DOM上（ ** __data__ ** 属性上），方便二者相互转换操作，比如：根据当前的DOM获取原始数据，经计算转换后用于绘制其它图形，反过来，也可以根据数据过滤DOM
 
 - 转换数据与图形分离
 > 一般的可视化图（ECharts.js，Highchatrs.js等）API，是输入数据直接绘制图形的，但D3是将输入数据进行计算转换成图形所需要的数据，开发者自己绘制图形  
 > D3这种方式看似比较麻烦，但对于复杂的图形有更定制化需求时，会提高很大的自由度
 
 - 提供大量的布局和可视化效果案例
+- API简洁，不依赖浏览器以及其它库，方便集成到第三方库或框架中
 
 ## 更新Update、插入Enter、退出Exit模式
 
@@ -35,6 +38,16 @@ doms.exit().remove();
 
 退出Exit模式 **B\A**  
 ![B\A](./static/2017-11-21_134234.jpg)
+
+## 动画
+
+- 工作方式
+
+> selection.transition，指定选择元素的动画方案  
+> transition.ease，指定动画缓动函数   
+> transition.duration，指定动画时长  
+> transition.on，监听动画，start,end,interrupt对应动画开始，结束，中断3种事件
+> tween,styleTween,attrTween，指定css样式和DOM属性的插值动画函数
 
 ## 一些概念
 
@@ -168,3 +181,6 @@ var scale = d3.scaleLinear().domain([0,200,100]).range([10,20,30]); scale(150)//
 ```
 
 ### 4. 布局 layout
+
+## 参考
+- Data Visualization with D3.js Cookbook (D3.js数据可视化实战手册)
