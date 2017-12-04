@@ -372,7 +372,9 @@ new THREE.MeshBasicMaterial({
 ## 概念术语
 
 - Coordinate System 坐标系
-    - 裁剪空间
+    - 裁剪空间  
+    ![](./static/device-coordinates.png)
+
     - 世界坐标系，物理坐标系，视图坐标系
     - 左、右手坐标系
 
@@ -420,6 +422,8 @@ new THREE.MeshBasicMaterial({
 
         > 三维顶点为三元组(x,y,z),引入一个新的分量w，得到向量(x,y,z,w): 若w=1，则向量(x, y, z, 1)为空间中的点;若w=0，则向量(x, y, z, 0)为方向
 
+        ![](./static/1-RXBrCHLfKv_NBVxuyDCtMQ.png)
+
         > 三维图形学中我们只用到4x4矩阵，它能对顶点(x,y,z,w)作变换。这一变换是用矩阵左乘顶点来实现的：矩阵 * 顶点 = 变换后的顶点;
         
         > 累积变换的顺序: 先缩放,接着旋转,最后平移：TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
@@ -446,10 +450,16 @@ new THREE.MeshBasicMaterial({
     ![](./static/transformations.png)
     ![](./static/2017-03-05-cartoon-shading-1-matrix.png)
 
-## 推荐书籍
+- 数学计算  
+
+    ![](./static/3d-math.png)  
+
+## 参考
 
 - Three.js开发指南 （Learning Three.js）
 - 3D数学基础：图形与游戏开发
 - 3D游戏编程大师技巧(上，下)
 - 代码本色  用编程模拟自然系统 （The Nature of Code）
-- 
+- [webglfundamentals.org](https://webglfundamentals.org/)
+- [https://github.com/terkelg/math](https://github.com/terkelg/math)
+- [http://antongerdelan.net/teaching/3dprog1/maths_cheat_sheet.pdf](http://antongerdelan.net/teaching/3dprog1/maths_cheat_sheet.pdf)

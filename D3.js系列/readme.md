@@ -1,24 +1,44 @@
-# D3系列
+# D3.js系列
 
 ## 基本介绍
 
-> D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
-> 以函数对象的语法方式组织程序，很少使用new和this  
-> 
+> D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，是ProtoVis的改进，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
+> D3.js以数据驱动的编程方式，将复杂的程序逻辑代码转换为数据，以使得程序更好的开发和维护。  
+> 对于复杂的可视化项目，大部分类库都是以直接操作图形API的方式开发， D3.js注重的是数据转换，而不是图形表现，是以Web标准的HTML，SVG，CSS等来处理视图部分，以设计者的创意自己实现图形界面。   
 
 ## 特点
 
 - 数据绑定（DOM）
-> 将数据绑定DOM上（ ** \__data__ ** 属性上），方便二者相互转换操作，比如：根据当前的DOM获取原始数据，经计算转换后用于绘制其它图形，反过来，也可以根据数据过滤DOM
+> 将数据绑定DOM上，方便二者相互转换操作，比如：根据当前的DOM获取原始数据，经计算转换后用于绘制其它图形，反过来，也可以根据数据过滤DOM
 
 - 转换数据与图形分离
 > 一般的可视化图（ECharts.js，Highchatrs.js等）API，是输入数据直接绘制图形的，但D3是将输入数据进行计算转换成图形所需要的数据，开发者自己绘制图形  
 > D3这种方式看似比较麻烦，但对于复杂的图形有更定制化需求时，会提高很大的自由度
 
 - 提供大量的布局和可视化效果案例
-- API简洁，不依赖浏览器以及其它库，方便集成到第三方库或框架中
+- API简洁，不依赖浏览器以及其它库，方便集成到第三方库或框架中，使得D3融入整个生态体系，开发也变得灵活
+- 能够帮助实现个性化复杂的可视化图形，但学习曲线较高，在没有深入理解D3.js的数据驱动为核心思路时，很难把需求转换为对应的API来表达效果
 
-## 代码风格
+## 可视化项目的一般特点
+- 交互性强
+- 大量可视化图形算法
+- 细粒度的图形操作
+- 个性化需求多，复用性差
+- ...
+
+## 主要功能模块
+- 选择器 selector  
+> 以querySelector和querySelectorAll方法进行DOM节点的选择
+- 数据绑定 data  
+> 将数据添加到DOM的`__data__`属性上  
+- 动画变换  transition  
+> 通过封装的schedule和插值器interpolate计算出中间值，实现动画过渡效果  
+- 数组Arrays、集合Collections的一些扩展方法
+- 事件处理（Brushes，Dragging，Zooming，Dispatches）
+- 图形及布局计算（Arcs, Pies, Lines, Areas，Stacks，Forces，Geographies等）
+- 一些通用计算和辅助模块（Interpolators，Scales，Time Format，XHR，Queues等）
+
+## D3.js代码风格
 
 - 链式调用
 > 和jQuery的API类似，每个函数执行后，返回当前作用的对象; attr，style等调用参数数量<2时，为获取当前属性或样式值，否则为赋值操作
@@ -46,7 +66,11 @@ doms.exit().remove();
 ![A\B](./static/2017-11-21_133828.jpg)  
 
 退出Exit模式 **B\A**  
-![B\A](./static/2017-11-21_134234.jpg)
+![B\A](./static/2017-11-21_134234.jpg)  
+
+- 数据绑定机制  
+![B\A](./static/2017-12-04_113416.jpg)
+
 
 ## 动画
 
