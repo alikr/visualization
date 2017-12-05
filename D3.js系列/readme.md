@@ -28,23 +28,40 @@
 
 ## 主要功能模块
 - 选择器 selector  
+
 > 以querySelector和querySelectorAll方法进行DOM节点的选择
+
 - 数据绑定 data  
+
 > 将数据添加到DOM的`__data__`属性上  
+
 - 动画变换  transition  
+
 > 通过封装的schedule和插值器interpolate计算出中间值，实现动画过渡效果  
+
 - 数组Arrays、集合Collections的一些扩展方法
-- 事件处理（Brushes，Dragging，Zooming，Dispatches）
+- 通用交互事件（Brushes，Dragging，Zooming）  
+
+> 使用selection.on方法addEventListener多个事件，并借助dispatch模块，生成listeners，主要是基于以下事件进行封装：  
+> Brush：selection.on("mousedown.brush, mousemove.brush, mouseup.brush")  
+> Drag：selection.on("mousedown.drag, mousemove.drag, mouseup.drag")  
+> Zoom：selection.on("wheel.zoom")  
+
 - 图形及布局计算（Arcs, Pies, Lines, Areas，Stacks，Forces，Geographies等）
-- 一些通用计算和辅助模块（Interpolators，Scales，Time Format，XHR，Queues等）
+- 一些通用计算和辅助模块（Dispatches，Interpolators，Scales，Time Format，XHR，Queues等）
 
 ## D3.js代码风格
 
 - 链式调用
+
 > 和jQuery的API类似，每个函数执行后，返回当前作用的对象; attr，style等调用参数数量<2时，为获取当前属性或样式值，否则为赋值操作
-- 函数参数
-> d：datum，i：index，this：当前DOM元素，例如：`.attr('x', function(d, i){console.log(d, i, this)})` 
-- 函数默认参数
+
+- 函数参数  
+
+> d：datum，i：index，this：当前DOM元素，例如：`.attr('x', function(d, i){console.log(d, i, this)})`  
+
+- 函数默认参数  
+
 > 例如：`.attr('x', setX)`，相当于 `.attr('x', function(d, i){return setX(d, i)})`
 
 ## 更新Update、插入Enter、退出Exit模式
@@ -89,8 +106,9 @@ doms.exit().remove();
 
 #### 为什么要归一化  
 
-- 简化计算
-> 将不同量纲的数据统一成无量纲数据，计算后，再转换为相应的量纲数据
+- 简化计算  
+
+> 将不同量纲的数据统一成无量纲数据，计算后，再转换为相应的量纲数据  
 
 ### 2. 比例尺 scale
 > scale就是可以进行特殊计算的函数，在线性比例尺中一般使用插值的方法计算  
@@ -115,7 +133,8 @@ var scale = d3.scaleLinear().domain([0,100,200]).range([10,20,30]); scale(150)//
 var scale = d3.scaleLinear().domain([0,200,100]).range([10,20,30]); scale(150)//输出17.5
 ```
 
-插值器计算方法（domain和range长度为2时，0=<t<=1）：  
+插值器计算方法（domain和range长度为2时，0=<t<=1）： 
+
 > domain和range元素都是数字时，输出：a * (1 - t) + b * t，其中t＝(x-domain[0])/(domain[1]-domain[0]),a=range[0],b=range[1],domain[0]>domain[1]时，domain和range执行reverse()  
 > range元素为字符串时，针对数字部分进行上述计算（没有数字部分输出为range[1]内容），保留字符串(不参与插值)，例如：var scale=d3.scaleLinear().domain([0,100]).range(["10px","20px"]);scale(50)//输出15px  
 > range元素为颜色值（rgb,hsl,hcl,lab）时，分别按相应的颜色模式进行插值  
