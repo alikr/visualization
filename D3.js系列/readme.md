@@ -1,5 +1,7 @@
 # D3.js系列
 
+> 版本：4.10.0
+
 ## 基本介绍
 
 > D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，是ProtoVis的改进，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
@@ -112,8 +114,8 @@ doms.exit().remove();
 
 ### 2. 比例尺 scale
 > scale就是可以进行特殊计算的函数，在线性比例尺中一般使用插值的方法计算  
-> domain: 值域，即原始数据的数值范围  
-> range: 定义域/输出域， 即输出值的范围  
+> domain: 定义域，即原始数据集合  
+> range: 值域，即输出数据集合  
 
 
 #### d3.scaleLinear 线性比例尺
@@ -129,24 +131,46 @@ range:[0,1]
 例如： 
 
 ```js
-var scale = d3.scaleLinear().domain([0,100,200]).range([10,20,30]); scale(150)//输出25
-var scale = d3.scaleLinear().domain([0,200,100]).range([10,20,30]); scale(150)//输出17.5
+var scale = d3.scaleLinear().domain([0,100,200]).range([10,20,30]);
+scale(150) //输出25
+
+var scale = d3.scaleLinear().domain([0,200,100]).range([10,20,30]);
+scale(150)//输出17.5
 ```
 
-插值器计算方法（domain和range长度为2时，0=<t<=1）： 
+插值器计算方法（domain和range长度为2时，`0=<t<=1`）： 
 
-> domain和range元素都是数字时，输出：a * (1 - t) + b * t，其中t＝(x-domain[0])/(domain[1]-domain[0]),a=range[0],b=range[1],domain[0]>domain[1]时，domain和range执行reverse()  
-> range元素为字符串时，针对数字部分进行上述计算（没有数字部分输出为range[1]内容），保留字符串(不参与插值)，例如：var scale=d3.scaleLinear().domain([0,100]).range(["10px","20px"]);scale(50)//输出15px  
-> range元素为颜色值（rgb,hsl,hcl,lab）时，分别按相应的颜色模式进行插值  
-> range元素为数组且数组元素包含数字时，输出时，保留数组形式并插值计算数组内元素，当range元素各数组长度不一致时，只插值计算相同下标内元素，例如：var scale=d3.scaleLinear().domain([0,100]).range([[10],[20]]);scale(50)//输出[15];  
-> var scale=d3.scaleLinear().domain([0,100]).range([[10,30],[20]]);scale(15)//输出[15, 30];  
-> range元素为对象时，插值计算对象内元素，例如：var scale=d3.scaleLinear().domain([0,100]).range([{"width":10},{"width":20}]);scale(50)//输出{width: 15}  
+> 当domain和range元素都是数字时，输出：  
+```js
+a * (1 - t) + b * t
+```  
+> 其中，`t=(x-domain[0])/(domain[1]-domain[0])`，`a=range[0]`，`b=range[1]`  
+> 当domain[0]>domain[1]时，domain和range执行reverse()  
+
+> 当range元素为字符串：  
+>> 针对数字部分进行上述计算（没有数字部分输出为range[1]内容），保留字符串(不参与插值)  
+>> 例如：`var scale=d3.scaleLinear().domain([0,100]).range(["10px","20px"]); scale(50) //输出15px`    
+
+> 当range元素为颜色值（rgb,hsl,hcl,lab），分别按相应的颜色模式进行插值    
+
+> range元素为数组且数组元素包含数字时，输出时，保留数组形式并插值计算数组内元素，当range元素各数组长度不一致时，只插值计算相同下标内元素
+>>例如：  
+>> `var scale=d3.scaleLinear().domain([0,100]).range([[10],[20]]); scale(50) //输出[15]`;  
+>> `var scale=d3.scaleLinear().domain([0,100]).range([[10,30],[20]]); scale(50) //输出[15]`;  
+>> `var scale=d3.scaleLinear().domain([0,100]).range([[10,30],[20,40]]); scale(50) //输出[15,35]`;  
+
+> range元素为对象时，插值计算对象内元素  
+> 例如：`var scale=d3.scaleLinear().domain([0,100]).range([{"width":10},{"width":20}]);scale(50) //输出{width: 15}`  
 > 应用场景：趋势统计类  
 
 
 #### d3.scalePow 指数比例尺  
-> 基于d3.scaleLinear，默认指数为1，将domain各元素和输入值进行指数操作后进行线性插值，例如：var scale=d3.scale.pow().domain([0,100]).range([10,20]).exponent(2);scale(50) //输出12.5   
-应用场景：圆面积变化  
+> 基于d3.scaleLinear，默认指数为1，将domain各元素和输入值进行指数计算后（保留+-符号），进行线性插值，domain元素必须为数字，否则输出NaN  
+> 例如：  
+> `var scale=d3.scalePow().domain([0,100]).range([10,20]).exponent(2); scale(50) //输出12.5`  
+> 等于：  
+> `var scale=d3.scaleLinear().domain([Math.pow(0,2), Math.pow(100,2)]).range([10,20]); scale(Math.pow(50,2)) //输出12.5`  
+> 应用场景：圆面积变化  
 
 #### d3.scaleSqrt 平方根比例尺  
 > 参见d3.scalePow.exponent(0.5)  
@@ -227,9 +251,9 @@ var scale = d3.scaleLinear().domain([0,200,100]).range([10,20,30]); scale(150)//
 
 ### 3. 插值器 interpolation
 ```js
-	var a=d3.scaleLinear().domain([0,100]).range([0,10]);
-	a.interpolate(function(){return function(t){return 0*(1-t)+1000*t;}});//自定义插值器，0为值域开始，1000为值域终止
-	a(10);//根据自定义插值方式显示：100
+	var scale = d3.scaleLinear().domain([0,100]).range([0,10]);
+	scale.interpolate(function(){return function(t){ return 0 * (1 - t) + 1000 * t}}); //自定义插值器，0为值域开始，1000为值域终止，等价于scale.range([0,1000])
+	scale(10); //根据自定义插值方式显示：100
 ```
 
 ### 4. 布局 layout
