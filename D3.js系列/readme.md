@@ -1,12 +1,13 @@
 # D3.js系列
 
-> 版本：4.10.0
+> 版本：`4.10.0`
 
 ## 基本介绍
 
 > D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，是ProtoVis的改进，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
 > D3.js以数据驱动的编程方式，将复杂的程序逻辑代码转换为数据，以使得程序更好的开发和维护。  
-> 对于复杂的可视化项目，大部分类库都是以直接操作图形API的方式开发， D3.js注重的是数据转换，而不是图形表现，是以Web标准的HTML，SVG，CSS等来处理视图部分，以设计者的创意自己实现图形界面。   
+> 对于复杂的可视化项目，大部分类库都是以直接操作图形API的方式开发， D3.js注重的是数据转换，而不是图形表现，是以Web标准的HTML，SVG，CSS等来处理视图部分，
+> 以设计者的创意自己实现图形界面。   
 
 ## 特点
 
@@ -121,7 +122,7 @@ doms.exit().remove();
 #### d3.scaleLinear 线性比例尺
 > 说明：线性比例尺使用插值器来计算，domain元素必须为数值类型或是字符型数字  
 > 默认插值器包括：字符串插值、颜色插值、数组插值、对象插值、数字插值，根据range元素类型自动执行相应的插值器  
-> domain数组长度>=2，range数组长度>=2，其中当domain.length>2时，元素要从小到大排序，否则无法按domain范围到range范围输出
+> domain数组长度 ≥ 2，range数组长度 ≥ 2，其中当domain.length > 2时，元素要从小到大排序，否则无法按domain范围到range范围输出
 
 默认：  
 domain:[0,1]  
@@ -138,12 +139,9 @@ var scale = d3.scaleLinear().domain([0,200,100]).range([10,20,30]);
 scale(150)//输出17.5
 ```
 
-插值器计算方法（domain和range长度为2时，`0=<t<=1`）： 
+插值器计算方法（domain和range长度为2时，`0 ≤ t ≤ 1`）： 
 
-> 当domain和range元素都是数字时，输出：  
-```js
-a * (1 - t) + b * t
-```  
+> 当domain和range元素都是数字时，输出：`a * (1 - t) + b * t`  
 > 其中，`t=(x-domain[0])/(domain[1]-domain[0])`，`a=range[0]`，`b=range[1]`  
 > 当domain[0]>domain[1]时，domain和range执行reverse()  
 
@@ -167,9 +165,15 @@ a * (1 - t) + b * t
 #### d3.scalePow 指数比例尺  
 > 基于d3.scaleLinear，默认指数为1，将domain各元素和输入值进行指数计算后（保留+-符号），进行线性插值，domain元素必须为数字，否则输出NaN  
 > 例如：  
-> `var scale=d3.scalePow().domain([0,100]).range([10,20]).exponent(2); scale(50) //输出12.5`  
-> 等于：  
-> `var scale=d3.scaleLinear().domain([Math.pow(0,2), Math.pow(100,2)]).range([10,20]); scale(Math.pow(50,2)) //输出12.5`  
+
+>> `var scale=d3.scalePow().domain([0,100]).range([10,20]).exponent(2); scale(50) //输出12.5`  
+>> 等于：  
+>> `var scale=d3.scaleLinear().domain([Math.pow(0,2), Math.pow(100,2)]).range([10,20]); scale(Math.pow(50,2))`  
+
+>> `var scale=d3.scalePow().domain([0,-100]).range([10,20]).exponent(2); scale(50) //输出7.5`  
+>> 等于：  
+>> `var scale=d3.scaleLinear().domain([Math.pow(0,2), -Math.pow(100,2)]).range([10,20]); scale(Math.pow(50,2))`  
+
 > 应用场景：圆面积变化  
 
 #### d3.scaleSqrt 平方根比例尺  
@@ -178,10 +182,10 @@ a * (1 - t) + b * t
 
 #### d3.scaleLog 对数比例尺  
 > 基于d3.scaleLinear，将domain各元素和输入值进行对数操作后进行线性插值，注意domain各元素>0，否则输出NaN  
-> 应用场景：  
+> 应用场景：以自然对数的数据  
 
 #### d3.scaleQuantize 量化比例尺  
-> 说明：domain各元素必须为数值类型，domain数组长度>=2,range数组长度>=2，其中domain在计算中只使用了domain[0]和domain[domain.length-1]2个值  
+> 说明：domain各元素必须为数值类型，domain数组长度 ≥ 2,range数组长度 ≥ 2，其中domain在计算中只使用了domain[0]和domain[1]2个值，定义域是连续的，值域是离散的  
 	默认:  
 	domain:[0,1]  
 	range:[0,1]  
@@ -189,45 +193,108 @@ a * (1 - t) + b * t
 	range[index]  
 	index有效值为0～range.length-1  
 	index=Math.floor((输入值-domain[0]) * range.length/(domain[domain.length-1]-domain[0]))   
-> 应用场景：  
+> 示例：
+```js
+var scale = d3.scaleQuantize()
+  .domain([0, 100])
+  .range(['A', 'B', 'C', 'D']);
+scale(-1); // A, index = 0
+scale(0); // A, index = 0
+scale(10); // A, index = 0
+scale(30); // B, index = 1
+scale(50); // C, index = 2
+scale(90); // D, index = 3
+scale(110); // D, index = 3
+```
+> 计算步骤：  
+> domain被分为：[0, 25, 50, 75, 100]，`(100 - 0) / 4 = 25`  
+> x < 0 对应 'A'  
+> 0 ≤ x < 25 对应 'A'  
+> 25 ≤ x < 50 对应 'B'  
+> 50 ≤ x < 75 对应 'C'  
+> 75 ≤ x < 100 对应 'D'  
+> x ≥ 100 对应 'D'  
+> 应用场景：基于值域的数量等分定义域，形成分段的阈值映射值域  
+
+#### d3.scaleQuantile 分位比例尺  
+> 默认为空  
+> domain各元素必须为数值类型，正序，非数值类型将过滤，使用d3.quantile将domain生成新的分位值数组(length = range.length - 1)，
+> 使用bisect在分位值数组中找到输入值所在的插入点位置index  
+  输出: range[index]  
+> 示例：  
+```js
+var scale = d3.scaleQuantile()
+  .domain([0, 100])
+  .range(['A', 'B', 'C', 'D']);
+scale(50); // C
+```
+> 计算步骤：  
+> 1. newDomain.length = range.length - 1; i = 1;  
+> 2. newDomain: [d3.quantile([0,100],i/length), d3.quantile([0,100],(i + 1)/length), d3.quantile([0,100],(i + 2)/length)]  
+> 3. index = d3.bisect(newDomain, 50) // 注：d3.bisect = d3.bisectRight  
+> 4. range[index]  
+> 应用场景：同d3.scaleQuantize，但domain.length ≥ 2
 
 #### d3.scaleThreshold 阈值比例尺  
 > 默认:  
 	domain:[0.5]  
 	range[0,1]  
 	输出：0(==0)，1（>=1）  
-	domain各元素必须为数值类型，对domain正排序后，查找输入值在domain中的插入的位置（右侧）index，输出为range[index],通常range元素数量要比domain多一个  
-> 应用场景：  
-
-#### d3.scaleQuantile 分位比例尺  
-> 默认为空  
-  domain各元素必须为数值类型，非数值类型将过滤，使用d3.quantile将domain生成新的分位值数组(range长度)，使用bisect在分位值数组中找到输入值所在的插入点位置index  
-  输出: range[index]  
-> 应用场景：  
+	使用bisect查找输入值在domain中的插入的位置index，输出为range[index]，通常range元素数量要比domain多一个  
+> 示例：  
+```js
+var scale = d3.scaleThreshold()
+  .domain([0, 100, 200])
+  .range(['A', 'B', 'C', 'D']);
+scale(50); // B
+```
+> 计算步骤：  
+> n = Math.min(domain.length, range.length - 1)  
+> index = d3.bisect(domain, x, 0, n)  
+> range[index]  
+> 应用场景：根据输入值在domain的右侧插入点位置来确定输出，注：只有输入值小于domin各元素值时，输出值为range[0]  
 
 #### d3.scaleIdentity 等价比例尺  
 > 默认:  
   domain:[0,1]  
-  range:[0,1]  
-  输出：  
-  x(==x)，输入数字，即输出为相应的数值，不能转换为数字时，输出为NaN  
-  只需要设置domain，range同domain的值一致，作用是将domain元素中字符型数字转换为数值类型，以便输出使用  
-> 应用场景：  
+  输出：x(==x)，输入数字，即输出为相应的数值，不能转换为数字时，输出为NaN  
+  
+> 只需要设置domain，作用是将domain元素中数字字符转换为数字  
+> 输出时，为x(==x)，与domain无关  
+> 应用场景：数字字符与数字互换  
 
 #### d3.scaleOrdinal 序数比例尺  
 > 默认：  
 	domain:[]  
-	range:[0,1]  
+	range:[]  
 	输出为空  
-	生成domain中元素关联到range相应的元素的map对象，输出为map对象输入值对应的键值，当输入值不在map对象中，将当前输入值添加到domain中，并domain长度与range长度取模，用取模是为了在range数量中取值（每次执行新的scale都会添加到domain中）  
+	生成domain中元素关联到range相应的元素的map对象，输出为map对象输入值对应的键值，当输入值不在map对象中，将当前输入值添加到domain中，
+	将domain长度与range长度取模，用取模是为了控制在range数量中取值（每次执行新的scale都会添加到domain中）  
 	输出: range[取模值]  
-> 应用场景：分类   
+> 示例：  
+
+```js
+var scale = d3.scaleOrdinal()
+  .domain(['A', 'B', 'C'])
+  .range(['#fff', '#000', '#999']);
+scale('A'); // '#fff'
+scale('C'); // '#999'
+scale('D'); // '#fff'，添加到domain中，计算 scale.range()[scale.domain().length % scale.range().length]
+scale.domain(); // 查看domain： ['A', 'B', 'C', 'D'];
+```
+
+> 计算步骤：  
+> 将domain元素转换为d3.map对象（[{'A':1},{'B':2},{'C':3}]）  
+> 查找输入值在map的index = map.get(x)，输入值不在map内时，map.set(x, domain.length)  
+> range[(index - 1) % range.length]  
+> 应用场景：分类映射   
 
 #### d3.scaleTime 时间比例尺  
-> 基于d3.scaleLinear，只是将domain格式化为日期类型（输入值也必须为日期类型，数值类型时输出range[0]，其它类型时输出NaN），当domain元素不是日期类型的值时，输入日期输出为当前时间戳，输入数字类型时，按线性比例输出。  
+> 基于d3.scaleLinear，只是将domain格式化为日期类型（输入值也必须为日期类型，数值类型时输出range[0]，其它类型时输出NaN），
+> 当domain元素不是日期类型的值时，输入日期输出为当前时间戳，输入数字类型时，按线性比例输出。  
 > 应用场景：时间轴  
 
-** 4.x增加以下比例尺 **   
+** 4.x增加的比例尺 **   
 
 #### d3.scalePoint  
 > 默认：range:[0,1], paddingInner = 1  
@@ -252,7 +319,9 @@ a * (1 - t) + b * t
 ### 3. 插值器 interpolation
 ```js
 	var scale = d3.scaleLinear().domain([0,100]).range([0,10]);
-	scale.interpolate(function(){return function(t){ return 0 * (1 - t) + 1000 * t}}); //自定义插值器，0为值域开始，1000为值域终止，等价于scale.range([0,1000])
+
+	//自定义插值器，0为值域开始，1000为值域终止，等价于scale.range([0,1000])
+	scale.interpolate(function(){return function(t){ return 0 * (1 - t) + 1000 * t}});
 	scale(10); //根据自定义插值方式显示：100
 ```
 
@@ -260,3 +329,4 @@ a * (1 - t) + b * t
 
 ## 参考
 - Data Visualization with D3.js Cookbook (D3.js数据可视化实战手册)
+- [D3 in Depth](https://bl.ocks.org/d3indepth)
