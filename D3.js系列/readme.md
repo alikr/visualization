@@ -38,7 +38,7 @@
 <a name="%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"></a>
 ## 基本介绍
 
-> D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，是ProtoVis的改进，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
+> D3(Data-Driven Documents)，数据驱动文档，是一个javascript数据可视化库，是[ProtoVis](http://mbostock.github.io/protovis/)的改进，作者是 [Mike Bostock](https://bost.ocks.org/mike/)  
 > D3.js以数据驱动的编程方式，将复杂的程序逻辑代码转换为数据，以使得程序更好的开发和维护。  
 > 对于复杂的可视化项目，大部分类库都是以直接操作图形API的方式开发， D3.js注重的是数据转换，而不是图形表现，是以Web标准的HTML，SVG，CSS等来处理视图部分，
 > 以设计者的创意自己实现图形界面。   
